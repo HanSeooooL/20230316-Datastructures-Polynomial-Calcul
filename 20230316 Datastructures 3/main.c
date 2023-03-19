@@ -5,10 +5,10 @@
 //  Created by 한설 on 2023/03/16.
 //
 
+
 #include <stdio.h>
 #include <time.h>
 #include "Calcul.h"
-
 
 Polynomial read_poly(void); //다항식 입력함수 예열
 void printf_poly(Polynomial p, int number); //다항식 출력함수 예열
@@ -64,7 +64,6 @@ void maincode(void)
         printf("계산할 다항식이 부족해 프로그램을 종료합니다. ");
 }
 
-
 void printf_poly(Polynomial p, int number)  //Polynomial 구조체형태와 정수형 number를 매개변수로 하는 다항식을 출력해주는 함수.
 {
     int i;
@@ -87,12 +86,15 @@ Polynomial read_poly(void)  //다항식을 구조체로 입력하는 함수.
     scanf("%d", &p.degree); //degree에 다항식의 최고 차수 입력
     printf("각 항의 계수를 입력하시오 (총 %d개) \n", p.degree + 1);
     for( i = 0; i <= p.degree; i++) //0차 항부터 degree의 값과 같은 차수의 항까지 순차적으로 입력
-        scanf("%f", p.coef + i);
-    for (i = p.degree ; i >= 0; i--)    //최고차항에 0이 입력되어있을 시 degree값을 하나 줄이기 (곱셈을 위해 필요)
+    {
+        scanf("%f", p.coef + i);    //p.coef + i --> &(p.coef[i])
+    }
+    for (i = p.degree ; i >= 0; )    //최고차항에 0이 입력되어있을 시 degree값을 하나 줄이기 (곱셈을 위해 필요)
     {
         if (p.coef[i] == 0)
         {
             p.degree = p.degree - 1;
+            i = i - 1;
         }
         else
             break;
