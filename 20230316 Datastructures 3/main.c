@@ -10,9 +10,6 @@
 #include <time.h>
 #include "Calcul.h"
 
-Polynomial read_poly(void); //다항식 입력함수 예열
-void printf_poly(Polynomial p, int number); //다항식 출력함수 예열
-
 
 int main() {
     
@@ -87,7 +84,6 @@ void printf_poly(Polynomial p, int number)  //Polynomial 구조체형태와 정�
 }
 
 
-
 Polynomial read_poly(void)  //다항식을 구조체로 입력하는 함수.
 {
     int i;
@@ -98,16 +94,20 @@ Polynomial read_poly(void)  //다항식을 구조체로 입력하는 함수.
     for( i = 0; i <= p.degree; i++) //0차 항부터 degree의 값과 같은 차수의 항까지 순차적으로 입력
     {
         scanf("%f", p.coef + i);    //p.coef + i --> &(p.coef[i])
-        printf("%f %d\n", p.coef[i], i);
+        printf("%.1f %d\n", p.coef[i], i);
     }
-    for (i = p.degree ; i >= 0; )    //최고차항에 0이 입력되어있을 시 degree값을 하나 줄이기 (곱셈을 위해 필요)
+    
+    while (1)
     {
-        if (p.coef[p.degree] == 0)
+        if (p.coef[0] == 0)
         {
-            p.degree = p.degree - 1;
-            i = i - 1;
+            for (i = 0; i < p.degree; i++)
+            {
+                p.coef[i] = p.coef[i + 1];  //칸을 왼쪽으로 한칸씩 옮기기(최고차항이 배열의 0칸에 저장되어 있으므로.)
+            }
+            p.degree -= 1;
         }
-        else
+        else if (p.coef[0] != 0)
             break;
     }
     return p;

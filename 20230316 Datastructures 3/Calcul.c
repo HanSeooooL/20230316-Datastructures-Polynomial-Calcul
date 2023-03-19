@@ -73,10 +73,21 @@ Polynomial add_poly(Polynomial a, Polynomial b) //다항식 덧셈함수
 {
     Polynomial res; //결과값 저장 구조체
     
-    if (a.degree >= b.degree)    //b의 최고차수보다 a의 최고차수가 크거나 같을 때
+    if (a.degree > b.degree)    //b의 최고차수보다 a의 최고차수가 크거나 같을 때
+    {
         res.degree = a.degree;  //res의 최고차수는 a의 최고차수와 같다
+        b.coef[a.degree] = 0;   //a의 최고차수의 배열이 b의 배열과 계산하는 항 초기화.
+    }
     else if (a.degree < b.degree)   //아니면 b의 최고차수보다 a의 최고차수가 작을 때
+    {
         res.degree = b.degree;      //res의 최고차수는 b의 최고차수와 같다
+        a.coef[b.degree] = 0;       //b의 최고차수의 배열이 a의 배열과 계산하는 항 초기화.
+    }
+    else if (a.degree == b.degree)
+    {
+        res.degree = a.degree;
+    }
+    
     for(int i = 0; i <= res.degree; i++) //i가 res의 최고차수보다 같거나 적을 때 반복한다. (코드 실행이 끝날 때 i에 1을 더한다)
     {
         res.coef[i] = a.coef[i] + b.coef[i];    //res의 x^i의 계수는 a의 x^i의 계수와 b의 x^i의 계수를 더한 것과 같다.
