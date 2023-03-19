@@ -21,7 +21,7 @@ int main() {
 void maincode(void)
 {
     int i, l, Q, n;
-    printf("몇개의 다항식을 입력하시겠습니까? ");
+    printf("몇개의 다항식을 입력하시겠습니까? (최대 10개)");
     scanf("%d", &l);
     Polynomial P[l];
     for(i = 0; i < l; i++)
@@ -30,7 +30,7 @@ void maincode(void)
         printf_poly(P[i], i);
     }
     
-    while (i == 0) {
+    while (i == 1) {
         printf("입력된 다항식이 1개입니다. 계산을 위해서는 다항식을 더 입력하셔야 합니다. \n");
         printf("더 입력하시려면 1 이대로 프로그램을 끝내시려면 0 ");
         scanf("%d", &Q);
@@ -55,6 +55,8 @@ void maincode(void)
         }
     }
     
+    P[2] = add_poly(P[0], P[1]);
+    
     if (i > 0)
         math(P, &i);
     else
@@ -71,11 +73,11 @@ void printf_poly(Polynomial p, int number)  //Polynomial 구조체형태와 정�
         {
             if (i != p.degree)  //X^0항을 제외한 항 출력
             {
-                printf("%.1fx^%d + ", p.coef[i], p.degree - i);
+                printf("%5.1fx^%d + ", p.coef[i], p.degree - i);
             }
             else    //X^0항 출력
             {
-                printf("%.1f", p.coef[i]);
+                printf("%5.1f", p.coef[i]);
             }
         }
     }
