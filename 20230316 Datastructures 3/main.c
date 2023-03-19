@@ -68,12 +68,22 @@ void printf_poly(Polynomial p, int number)  //Polynomial 구조체형태와 정�
 {
     int i;
     printf("\t%d : ", number);  //다항식 번호 출력
-    for(i = 0; i < p.degree; i++)
+    for(i = 0; i <= p.degree; i++)
     {
-        if (p.coef[i] != 0) //계수가 0인 항은 출력하지 못하게끔 조정
-            printf("%5.1f x^%d + ", p.coef[i], p.degree - i);
+        if(p.coef[i] != 0)
+        {
+            if (i != p.degree)  //X^0항을 제외한 항 출력
+            {
+                printf("%.1fx^%d + ", p.coef[i], p.degree - i);
+            }
+            else    //X^0항 출력
+            {
+                printf("%.1f", p.coef[i]);
+            }
+        }
     }
-    printf("%4.1f\n", p.coef[p.degree] );
+    printf("\n");
+    
 }
 
 
@@ -88,10 +98,11 @@ Polynomial read_poly(void)  //다항식을 구조체로 입력하는 함수.
     for( i = 0; i <= p.degree; i++) //0차 항부터 degree의 값과 같은 차수의 항까지 순차적으로 입력
     {
         scanf("%f", p.coef + i);    //p.coef + i --> &(p.coef[i])
+        printf("%f %d\n", p.coef[i], i);
     }
     for (i = p.degree ; i >= 0; )    //최고차항에 0이 입력되어있을 시 degree값을 하나 줄이기 (곱셈을 위해 필요)
     {
-        if (p.coef[i] == 0)
+        if (p.coef[p.degree] == 0)
         {
             p.degree = p.degree - 1;
             i = i - 1;
