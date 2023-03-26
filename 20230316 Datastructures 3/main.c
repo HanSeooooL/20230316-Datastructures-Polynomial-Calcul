@@ -55,8 +55,6 @@ void maincode(void)
         }
     }
     
-    P[2] = add_poly(P[0], P[1]); //다 작성한 후에는 지워야 함.
-    
     if (i > 0)
         math(P, &i);
     else
@@ -96,7 +94,6 @@ Polynomial read_poly(void)  //다항식을 구조체로 입력하는 함수.
     for( i = 0; i <= p.degree; i++) //degree값과 같은 차수의 항부터 0차수의 항까지 순차적으로 입력
     {
         scanf("%f", p.coef + i);    //p.coef + i --> &(p.coef[i])
-        printf("%.1f %d\n", p.coef[i], i);
     }
     
     while (1)
