@@ -18,3 +18,4 @@ Polynomial mul_poly(Polynomial a, Polynomial b);    //다항식 곱셈함수 예
 Polynomial read_poly(void); //다항식 입력함수 예열
 void printf_poly(Polynomial p, int number); //다항식 출력함수 예열
 void maincode(void);    //maincode 함수 예열
+double cal_poly(Polynomial a, double x); // x 대입계산함수 예열

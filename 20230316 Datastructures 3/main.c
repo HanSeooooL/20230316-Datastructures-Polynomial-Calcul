@@ -17,13 +17,13 @@ int main() {
     return 0;
 }
 
-
 void maincode(void)
 {
-    int i, l, Q, n;
-    printf("몇개의 다항식을 입력하시겠습니까? (최대 10개)");
+    int i, l, t, Q, n;
+    printf("몇개의 다항식을 입력하시겠습니까? (최대 10개)");  //입력받을 다항식 개수 입력
     scanf("%d", &l);
-    Polynomial P[l];
+    t = l + 5;  //다항식을 계산해서 저장할 칸 여유분 확보
+    Polynomial P[t];
     for(i = 0; i < l; i++)
     {
         P[i] = read_poly();
@@ -55,7 +55,7 @@ void maincode(void)
         }
     }
     
-    P[2] = add_poly(P[0], P[1]);
+    P[2] = add_poly(P[0], P[1]); //다 작성한 후에는 지워야 함.
     
     if (i > 0)
         math(P, &i);
@@ -93,7 +93,7 @@ Polynomial read_poly(void)  //다항식을 구조체로 입력하는 함수.
     printf("다항식의 최고 차수를 입력하시오 (최대 100) : ");
     scanf("%d", &p.degree); //degree에 다항식의 최고 차수 입력
     printf("각 항의 계수를 입력하시오 (총 %d개) \n", p.degree + 1);
-    for( i = 0; i <= p.degree; i++) //0차 항부터 degree의 값과 같은 차수의 항까지 순차적으로 입력
+    for( i = 0; i <= p.degree; i++) //degree값과 같은 차수의 항부터 0차수의 항까지 순차적으로 입력
     {
         scanf("%f", p.coef + i);    //p.coef + i --> &(p.coef[i])
         printf("%.1f %d\n", p.coef[i], i);

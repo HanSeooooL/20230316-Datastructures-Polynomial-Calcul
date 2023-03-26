@@ -13,8 +13,8 @@
 void math(Polynomial *poly, int *i) //다항식 계산할때 쓰는 톨게이트 함수.
 {
     int C, Pl, Plu, j;
+    double x, y;
     int S = 1;
-    
     
     while (S != 0)  //S가 0과 같지 않을 때 반복한다.
     {
@@ -23,7 +23,7 @@ void math(Polynomial *poly, int *i) //다항식 계산할때 쓰는 톨게이트
         {
             printf_poly(*(&poly[j]), j);
         }
-        printf("다항식을 더하시려면 1 곱하시려면 2 그만두시려면 0을 입력해주세요. ");
+        printf("다항식을 더하시려면 1 곱하시려면 2 x에 숫자를 대입해 결과값을 출력하시려면 3 그만두시려면 0을 입력해주세요. ");
         scanf("%d", &C);
         if(C == 0)  //그만둘게용 0
             break;
@@ -60,8 +60,20 @@ void math(Polynomial *poly, int *i) //다항식 계산할때 쓰는 톨게이트
             printf_poly(*(&poly[*i]), *i);
             *i = *i + 1;
         }
+        else if (C == 3)
+        {
+            printf("대입할 다항식을 선택해주세요 ");
+            scanf("%d", &Pl);
+            printf("대입할 숫자(정수)를 입력해주세요 ");
+            scanf("%lf", &x);
+            
+            y = cal_poly(*(&poly[Pl]), x);
+            
+            printf("계산값은 %lf", y);
+            
+        }
         
-        else    //C != 0, 1, 2
+        else    //C != 0, 1, 2, 3
         {
             printf("잘못입력하셨습니다. 다시 입력해주세요. \n");
         }
@@ -71,46 +83,25 @@ void math(Polynomial *poly, int *i) //다항식 계산할때 쓰는 톨게이트
 
 Polynomial add_poly(Polynomial a, Polynomial b) //다항식 덧셈함수
 {
-    Polynomial res; //결과값 저장 구조체
     int i;
-    
-    if (a.degree > b.degree)    //b의 최고차수보다 a의 최고차수가 크거나 같을 때
+    Polynomial p;
+    if (a.degree > b.degree )   //b다항식보다 a다항식의 최고차수가 더 높을 때
     {
-        res.degree = a.degree;  //res의 최고차수는 a의 최고차수와 같다
-    }
-    else if (a.degree < b.degree)   //아니면 b의 최고차수보다 a의 최고차수가 작을 때
-    {
-        res.degree = b.degree;      //res의 최고차수는 b의 최고차수와 같다
-    }
-    else if (a.degree == b.degree)
-    {
-        res.degree = a.degree;
-    }
-    
-    printf("\n\n resdegree : %d \n\n", res.degree);
-    
-    for(i = res.degree; i >= 0;) //i는 res의 최고차수와 같고, 0보다 크거나 같을 때 반복한다.
-    {
-        if(res.degree == a.degree)
+        p = a;  //p다항식에 a다항식 복사
+        for(i = 0; i <= b.degree; i++) //i가 b의 최고차항과 같아질때까지
         {
-            if (b.degree < 0)
-                res.coef[i] = a.coef[a.degree];
-            else
-                res.coef[i] = a.coef[a.degree] + b.coef[b.degree];  //res의 x^i의 계수는 a의 x^i의 계수와 b의 x^i의 계수를 더한 것과 같다.
+            p.coef[i + (p.degree - b.degree)] += b.coef[i];
+            //최고차항이 먼저 저장되어있는 이 프로그램의 coef배열 특성을 고려하여 p.coef에는 i에 최고차항의 차를 더한다.
         }
-        else if(res.degree == b.degree)
-        {
-            if (a.degree < 0)
-                res.coef[i] = a.coef[a.degree];
-            else
-                res.coef[i] = a.coef[a.degree] + b.coef[b.degree];  //res의 x^i의 계수는 a의 x^i의 계수와 b의 x^i의 계수를 더한 것과 같다.
-        }
-        a.degree = a.degree - 1;
-        b.degree = b.degree - 1;
-        i = i - 1;
     }
-    
-    return res;
+    else    //아닐 경우
+    {
+        p = b;  //p다항식에 b다항식 복사
+        for ( i = 0; i <=a.degree ; i++)
+            //최고차항이 먼저 저장되어있는 이 프로그램의 coef배열 특성을 고려하여 p.coef에는 i에 최고차항의 차를 더한다.
+            p.coef[i +(p.degree - a.degree )] += a.coef[i];
+    }
+    return p;
 }
 
 
@@ -134,8 +125,23 @@ Polynomial mul_poly(Polynomial a, Polynomial b) //다항식 곱셈함수
         }
     }
     
-    
-    
     return res;
+}
+
+double cal_poly(Polynomial a, double x) //다항식 대입함수
+{
+    double y = 0, xt;
+    int i, j = 0;
+    while(a.degree >= 0)    //degree가 0 이상일때 작동
+    {
+        xt = 1;
+        for(i = 0; i < a.degree; i++)   //차수만큼 x를 곱한 값을 저장 (다항식에 x를 대입)
+            xt = xt * x;
+        xt = xt * a.coef[j];    //계수를 곱함
+        y = y + xt; //곱한 값을 더한다.
+        j = j + 1;  //다음 칸으로 이동
+        a.degree = a.degree - 1;    //다음 차수로 이동
+    }
+    return y;   //다 더한 값 출력
 }
 
